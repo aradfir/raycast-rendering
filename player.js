@@ -42,11 +42,17 @@ class Player{
         const widthPerColumn=2;
         var x=0;
         this.rays.forEach(ray => {
-            const dist=ray.findFirstCollision(bounds).dist(this.position);
+            const closePoint=ray.findFirstCollision(bounds);
+            if(!closePoint)
+            {
+                x+=widthPerColumn;
+                return;
+            }
+            const dist=closePoint.dist(this.position);
             const maxDist=createVector(0,0).dist(createVector(width,height/2));
-            var paintColor=255*dist*dist/(maxDist*maxDist);
+            var paintColor=255*dist/(maxDist);
             paintColor=255-paintColor;
-            var columnHeight=height/2 -map(dist*dist,0,maxDist*maxDist,0,height/2);
+            var columnHeight=height/2 -map(dist,0,maxDist,0,height/2);
             
             // const paintcolor=map(inverSquareDist, 0,maxDist , 0, 255);
             //console.log(dist*dist,paintColor,width*width+height*height/4)
