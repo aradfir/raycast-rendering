@@ -25,6 +25,9 @@ class Player{
         this.rays.push(new Ray(this.position.x,this.position.y,radians(i+this.headAngle)));
       }
       this.showRays(bounds);
+      const directionVector=p5.Vector.fromAngle(radians(this.headAngle),30);
+      stroke(255,0,0);
+      line(this.position.x,this.position.y,this.position.x+directionVector.x,this.position.y+directionVector.y)
     }
     showRays(bounds){
       push();
@@ -38,8 +41,9 @@ class Player{
     }
     show3d(bounds){
         push();
-        translate(0,height);
+        translate(0,3*height/4);
         const widthPerColumn=2;
+        var flag=false;
         var x=0;
         this.rays.forEach(ray => {
             const closePoint=ray.findFirstCollision(bounds);
@@ -48,7 +52,12 @@ class Player{
                 x+=widthPerColumn;
                 return;
             }
-            const dist=closePoint.dist(this.position);
+            const dist=closePoint.dist(this.position)*cos(radians(this.headAngle)-ray.angle);
+            if(!flag)
+                {
+                    flag=true;
+                    console.log(cos(radians(this.headAngle)-ray.angle));
+                }
             const maxDist=createVector(0,0).dist(createVector(width,height/2));
             var paintColor=255*dist/(maxDist);
             paintColor=255-paintColor;
@@ -61,7 +70,7 @@ class Player{
             noStroke();
             
             fill(floor(paintColor))
-            rect(x, -columnHeight,widthPerColumn , columnHeight);    
+            rect(x, -columnHeight/2,widthPerColumn , columnHeight);    
             x+=widthPerColumn;
         });
         pop();
@@ -69,7 +78,7 @@ class Player{
     }
     checkInputs(){
       const turnspeed=1;
-      const walkSpeed=1;
+      const walkSpeed=2;
       const mouseMove=mouseX-this.oldMouseX;
       this.headAngle=this.headAngle+mouseMove/2;
       if(keyIsDown(LEFT_ARROW))
