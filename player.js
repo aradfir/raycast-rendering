@@ -36,7 +36,31 @@ class Player{
       });
       pop();
     }
-    
+    show3d(bounds){
+        push();
+        translate(0,height);
+        const widthPerColumn=2;
+        var x=0;
+        this.rays.forEach(ray => {
+            const dist=ray.findFirstCollision(bounds).dist(this.position);
+            const maxDist=createVector(0,0).dist(createVector(width,height/2));
+            var paintColor=255*dist*dist/(maxDist*maxDist);
+            paintColor=255-paintColor;
+            var columnHeight=height/2 -map(dist*dist,0,maxDist*maxDist,0,height/2);
+            
+            // const paintcolor=map(inverSquareDist, 0,maxDist , 0, 255);
+            //console.log(dist*dist,paintColor,width*width+height*height/4)
+            // console.log(dist,inverSquareDist,maxDist,paintcolor);
+            //stroke(paintColor);
+            noStroke();
+            
+            fill(floor(paintColor))
+            rect(x, -columnHeight,widthPerColumn , columnHeight);    
+            x+=widthPerColumn;
+        });
+        pop();
+
+    }
     checkInputs(){
       const turnspeed=1;
       const walkSpeed=1;
