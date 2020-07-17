@@ -62,6 +62,7 @@ class Ray{
     findFirstCollision(bounds){
         var minDistPoint;
         var minDist=1000000;
+        var collidedWall;
         for(let bound of bounds){    
           const point=this.cast(bound);
           if(!point)
@@ -71,8 +72,9 @@ class Ray{
           {
             minDist=point.dist(this.point);
             minDistPoint=point;
+            collidedWall=bound;
           }
         }
-       return minDistPoint;
+       return [minDistPoint,collidedWall];
     }
   }

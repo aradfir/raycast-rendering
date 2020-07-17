@@ -33,7 +33,7 @@ class Player{
       push();
       stroke(0,255,0);
       this.rays.forEach(ray=>{
-        const minDistPoint=ray.findFirstCollision(bounds);
+        const minDistPoint=ray.findFirstCollision(bounds)[0];
         if(minDistPoint)
           line(this.position.x,this.position.y,minDistPoint.x,minDistPoint.y);
       });
@@ -42,34 +42,26 @@ class Player{
     show3d(bounds){
         push();
         translate(0,3*height/4);
-        const widthPerColumn=2;
-        var flag=false;
+        const widthPerColumn=1;
         var x=0;
         this.rays.forEach(ray => {
             const closePoint=ray.findFirstCollision(bounds);
-            if(!closePoint)
+            if(!closePoint[0])
             {
+                //no hit on this ray
                 x+=widthPerColumn;
                 return;
             }
-            const dist=closePoint.dist(this.position)*cos(radians(this.headAngle)-ray.angle);
-            if(!flag)
-                {
-                    flag=true;
-                    console.log(cos(radians(this.headAngle)-ray.angle));
-                }
+            //head angle is in degree, ray angle in radians. multiplied by cos to fix fisheye
+            const dist=closePoint[0].dist(this.position)*cos(radians(this.headAngle)-ray.angle);
+            const rayHitBound=closePoint[1];
             const maxDist=createVector(0,0).dist(createVector(width,height/2));
-            var paintColor=255*dist/(maxDist);
-            paintColor=255-paintColor;
-            var columnHeight=height/2 -map(dist,0,maxDist,0,height/2);
-            
-            // const paintcolor=map(inverSquareDist, 0,maxDist , 0, 255);
-            //console.log(dist*dist,paintColor,width*width+height*height/4)
-            // console.log(dist,inverSquareDist,maxDist,paintcolor);
-            //stroke(paintColor);
+            var paintColor=Math.atan2(Math.abs(rayHitBound.a.y-rayHitBound.b.y), Math.abs(rayHitBound.a.x-rayHitBound.b.x));//map(dist*dist,0,maxDist*maxDist,255,0);
+            paintColor=map(paintColor,-radians(90),radians(90),120,255);
+            var columnHeight=map(dist,0,maxDist,height/2,0);
             noStroke();
+            fill(paintColor);
             
-            fill(floor(paintColor))
             rect(x, -columnHeight/2,widthPerColumn , columnHeight);    
             x+=widthPerColumn;
         });

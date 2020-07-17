@@ -10,13 +10,16 @@ let player;
 function setup() {
   // put setup code here
   createCanvas(800, 800);
-  bounds.push(new Boundary(300,300,300,350));
-  // bounds.push(new Boundary(0,0,0,height));
-  // bounds.push(new Boundary(0,0,width,0));
-  // bounds.push(new Boundary(width,height,width,0));
-  // bounds.push(new Boundary(width,height,0,height));
+  bounds.push(new Boundary(400,300,400,350));
+
+  bounds.push(new Boundary(500,200,600,250));
+  bounds.push(new Boundary(500,300,600,250));
+  bounds.push(new Boundary(500,200,500,300));
+
   bounds=bounds.concat(new Box(0,0,width,height/2).bounds)
-  player=new Player(50,50,400,30,60);
+  bounds=bounds.concat(new Box(200,200,300,300).bounds)
+
+  player=new Player(50,50,800,30,60);
   
   //ray=new Ray(100,300,100,150);
   oldMouseX=mouseX;
