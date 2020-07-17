@@ -17,6 +17,7 @@ function setup() {
   // bounds.push(new Boundary(width,height,0,height));
   bounds=bounds.concat(new Box(0,0,width,height).bounds)
   player=new Player(50,50,600,30,90);
+  
   //ray=new Ray(100,300,100,150);
   oldMouseX=mouseX;
 }

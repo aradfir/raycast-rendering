@@ -7,6 +7,7 @@ class Player{
       this.headAngle=headAngle;
       this.FOVAngle=FOVAngle;
       this.rays=[];
+      this.oldMouseX=mouseX;
   
     }
     show(bounds){
@@ -23,22 +24,13 @@ class Player{
       {
         this.rays.push(new Ray(this.position.x,this.position.y,radians(i+this.headAngle)));
       }
-      this.showRay(bounds);
+      this.showRays(bounds);
     }
-    showRay(bounds){
+    showRays(bounds){
       push();
       stroke(0,255,0);
       this.rays.forEach(ray=>{
-        var minDistPoint;
-        var minDist=1000000;
-        bounds.forEach(bound => {
-          const point=ray.cast(bound);
-          if(point&&point.dist(this.position)<minDist)
-          {
-            minDist=point.dist(this.position);
-            minDistPoint=point;
-          }
-        });
+        const minDistPoint=ray.findFirstCollision(bounds);
         if(minDistPoint)
           line(this.position.x,this.position.y,minDistPoint.x,minDistPoint.y);
       });
@@ -48,7 +40,7 @@ class Player{
     checkInputs(){
       const turnspeed=1;
       const walkSpeed=1;
-      const mouseMove=mouseX-oldMouseX;
+      const mouseMove=mouseX-this.oldMouseX;
       this.headAngle=this.headAngle+mouseMove/2;
       if(keyIsDown(LEFT_ARROW))
       {
@@ -94,5 +86,6 @@ class Player{
         this.position.y-=moveVec.y;
         console.log("A");
       }
+      this.oldMouseX=mouseX;
     }
   }

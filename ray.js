@@ -58,4 +58,20 @@ class Ray{
         return;
       }
     }
+    findFirstCollision(bounds){
+        var minDistPoint;
+        var minDist=1000000;
+        for(let bound of bounds){    
+          const point=this.cast(bound);
+          if(!point)
+            continue;
+
+          if(point.dist(this.point)<minDist)
+          {
+            minDist=point.dist(this.point);
+            minDistPoint=point;
+          }
+        }
+       return minDistPoint;
+    }
   }
