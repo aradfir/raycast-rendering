@@ -8,6 +8,7 @@ class Ray{
     //angle in radian!!
     constructor(originX,originY,angle){
       this.point=createVector(originX,originY);
+      this.angle=angle;
       this.rayVector=createVector(cos(angle),sin(angle));
       this.rayVector.normalize();
     }
