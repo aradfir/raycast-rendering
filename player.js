@@ -55,10 +55,12 @@ class Player{
             //head angle is in degree, ray angle in radians. multiplied by cos to fix fisheye
             const dist=closePoint[0].dist(this.position)*cos(radians(this.headAngle)-ray.angle);
             const rayHitBound=closePoint[1];
-            const maxDist=createVector(0,0).dist(createVector(width,height/2));
+            const maxDist=createVector(0,0).dist(createVector(width,400));
             var paintColor=Math.atan2(Math.abs(rayHitBound.a.y-rayHitBound.b.y), Math.abs(rayHitBound.a.x-rayHitBound.b.x));//map(dist*dist,0,maxDist*maxDist,255,0);
             paintColor=map(paintColor,-radians(90),radians(90),120,255);
-            var columnHeight=map(dist,0,maxDist,height/2,0);
+            var columnHeight=1/map(1.0/(maxDist),0,1.0/(dist),0,10/height);
+            columnHeight=min([height-400,columnHeight]);
+            
             noStroke();
             fill(paintColor);
             

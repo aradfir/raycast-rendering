@@ -9,14 +9,14 @@ let ray;
 let player;
 function setup() {
   // put setup code here
-  createCanvas(800, 800);
+  createCanvas(800, 1000);
   bounds.push(new Boundary(400,300,400,350));
 
   bounds.push(new Boundary(500,200,600,250));
   bounds.push(new Boundary(500,300,600,250));
   bounds.push(new Boundary(500,200,500,300));
 
-  bounds=bounds.concat(new Box(0,0,width,height/2).bounds)
+  bounds=bounds.concat(new Box(0,0,width,400).bounds)
   bounds=bounds.concat(new Box(200,200,300,300).bounds)
 
   player=new Player(50,50,800,30,60);
