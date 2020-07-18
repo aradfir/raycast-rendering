@@ -22,7 +22,7 @@ function setup() {
 function draw() {
   background(60);
   player.show(bounds);
-  player.checkInputs();
+  player.checkInputs(bounds);
   bounds.forEach(bound => {
     bound.show();
   });

@@ -62,7 +62,7 @@ class Player{
             
             //inverse square law with a max height of the player
             var columnHeight=1/map(1.0/(maxDist),0,1.0/(dist),0,10/height);
-            columnHeight=min([height-400,columnHeight]);
+            columnHeight=min([height-300,columnHeight]);
             
             noStroke();
             fill(paintColor);
@@ -74,7 +74,7 @@ class Player{
         pop();
 
     }
-    checkInputs(){
+    checkInputs(bounds){
       const turnspeed=1;
       const walkSpeed=2;
       //move to the direction of delta mouse
@@ -91,38 +91,58 @@ class Player{
       if(keyIsDown(87))
       {
         //W is pressed
-        const moveVec=createVector(cos(radians(this.headAngle)),sin(radians(this.headAngle))).normalize();
-        moveVec.x*=walkSpeed;
-        moveVec.y*=walkSpeed;      
-        this.position.x+=moveVec.x;
-        this.position.y+=moveVec.y;
+        var moveRay=new Ray(this.position.x,this.position.y,radians(this.headAngle));
+        const frontPoint=moveRay.findFirstCollision(bounds);
+        if(frontPoint&&frontPoint[0]&&frontPoint[0].dist(this.position)>10)
+        {
+          const moveVec=createVector(cos(radians(this.headAngle)),sin(radians(this.headAngle))).normalize();    
+          moveVec.x*=walkSpeed;
+          moveVec.y*=walkSpeed;      
+          this.position.x+=moveVec.x;
+          this.position.y+=moveVec.y;
+        }
       }
       if(keyIsDown(83))
       {
         //S is pressed
-        const moveVec=createVector(cos(radians(this.headAngle)),sin(radians(this.headAngle))).normalize();
-        moveVec.x*=walkSpeed;
-        moveVec.y*=walkSpeed;
-        this.position.x-=moveVec.x;
-        this.position.y-=moveVec.y;
+        var moveRay=new Ray(this.position.x,this.position.y,radians(this.headAngle+180));
+        const frontPoint=moveRay.findFirstCollision(bounds);
+        if(frontPoint&&frontPoint[0]&&frontPoint[0].dist(this.position)>10)
+        {
+          const moveVec=createVector(cos(radians(this.headAngle)),sin(radians(this.headAngle))).normalize();    
+          moveVec.x*=walkSpeed;
+          moveVec.y*=walkSpeed;      
+          this.position.x-=moveVec.x;
+          this.position.y-=moveVec.y;
+        }
       }
       if(keyIsDown(68))
       {
         //D is pressed
-        const moveVec=createVector(cos(radians(this.headAngle+90)),sin(radians(this.headAngle+90))).normalize();
-        moveVec.x*=walkSpeed;
-        moveVec.y*=walkSpeed;
-        this.position.x+=moveVec.x;
-        this.position.y+=moveVec.y;
+        var moveRay=new Ray(this.position.x,this.position.y,radians(this.headAngle+90));
+        const frontPoint=moveRay.findFirstCollision(bounds);
+        if(frontPoint&&frontPoint[0]&&frontPoint[0].dist(this.position)>10)
+        {
+          const moveVec=createVector(cos(radians(this.headAngle+90)),sin(radians(this.headAngle+90))).normalize();
+          moveVec.x*=walkSpeed;
+          moveVec.y*=walkSpeed;
+          this.position.x+=moveVec.x;
+          this.position.y+=moveVec.y;
+        }
       }
       if(keyIsDown(65))
       {
         //A is pressed
-        const moveVec=createVector(cos(radians(this.headAngle+90)),sin(radians(this.headAngle+90))).normalize();
-        moveVec.x*=walkSpeed;
-        moveVec.y*=walkSpeed;
-        this.position.x-=moveVec.x;
-        this.position.y-=moveVec.y;
+        var moveRay=new Ray(this.position.x,this.position.y,radians(this.headAngle-90));
+        const frontPoint=moveRay.findFirstCollision(bounds)
+        if(frontPoint&&frontPoint[0]&&frontPoint[0].dist(this.position)>10)
+        {
+          const moveVec=createVector(cos(radians(this.headAngle+90)),sin(radians(this.headAngle+90))).normalize();
+          moveVec.x*=walkSpeed;
+          moveVec.y*=walkSpeed;
+          this.position.x-=moveVec.x;
+          this.position.y-=moveVec.y;
+        }
       }
       //update mousePosition
       this.oldMouseX=mouseX;
