@@ -1,4 +1,5 @@
 class Boundary{
+  //simple line
     constructor(x1,y1,x2,y2){
       this.a=createVector(x1,y1);
       this.b=createVector(x2,y2);
@@ -12,7 +13,7 @@ class Boundary{
     }
   }
 class Box{
-    
+    //made of 4 lines
     constructor(topLeftX,topLeftY,bottomRightX,bottomRightY){
         this.bounds=[];
         this.bounds.push(new Boundary(topLeftX,topLeftY,topLeftX,bottomRightY));

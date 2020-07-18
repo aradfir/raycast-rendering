@@ -1,10 +1,4 @@
 class Ray{
-    // constructor(originX,originY,dirX,dirY){
-    //   this.point=createVector(originX,originY);
-    //   this.rayVector=createVector(dirX,dirY);
-    //   this.rayVector.normalize();
-    // }
-  
     //angle in radian!!
     constructor(originX,originY,angle){
       this.point=createVector(originX,originY);
@@ -47,6 +41,7 @@ class Ray{
       const u=unum/den;
       if(t>0&&t<1&&u>0)
       {
+        //collision in the direction of the ray and the segment
         const resPoint=createVector();
         
           const x= x1+t*(x2-x1);
@@ -56,6 +51,7 @@ class Ray{
           return resPoint;
       }
       else{
+        //no collision
         return;
       }
     }

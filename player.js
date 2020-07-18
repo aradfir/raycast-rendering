@@ -56,15 +56,19 @@ class Player{
             const dist=closePoint[0].dist(this.position)*cos(radians(this.headAngle)-ray.angle);
             const rayHitBound=closePoint[1];
             const maxDist=createVector(0,0).dist(createVector(width,400));
-            var paintColor=Math.atan2(Math.abs(rayHitBound.a.y-rayHitBound.b.y), Math.abs(rayHitBound.a.x-rayHitBound.b.x));//map(dist*dist,0,maxDist*maxDist,255,0);
+            //caluculate the shade to draw with using the angle of the bound.
+            var paintColor=Math.atan2(Math.abs(rayHitBound.a.y-rayHitBound.b.y), Math.abs(rayHitBound.a.x-rayHitBound.b.x));
             paintColor=map(paintColor,-radians(90),radians(90),120,255);
+            
+            //inverse square law with a max height of the player
             var columnHeight=1/map(1.0/(maxDist),0,1.0/(dist),0,10/height);
             columnHeight=min([height-400,columnHeight]);
             
             noStroke();
             fill(paintColor);
-            
+            //draw rectangle
             rect(x, -columnHeight/2,widthPerColumn , columnHeight);    
+            //move drawhead to the right
             x+=widthPerColumn;
         });
         pop();
@@ -73,6 +77,7 @@ class Player{
     checkInputs(){
       const turnspeed=1;
       const walkSpeed=2;
+      //move to the direction of delta mouse
       const mouseMove=mouseX-this.oldMouseX;
       this.headAngle=this.headAngle+mouseMove/2;
       if(keyIsDown(LEFT_ARROW))
@@ -85,40 +90,41 @@ class Player{
       }
       if(keyIsDown(87))
       {
+        //W is pressed
         const moveVec=createVector(cos(radians(this.headAngle)),sin(radians(this.headAngle))).normalize();
         moveVec.x*=walkSpeed;
         moveVec.y*=walkSpeed;      
         this.position.x+=moveVec.x;
         this.position.y+=moveVec.y;
-        console.log("W");
       }
       if(keyIsDown(83))
       {
+        //S is pressed
         const moveVec=createVector(cos(radians(this.headAngle)),sin(radians(this.headAngle))).normalize();
         moveVec.x*=walkSpeed;
         moveVec.y*=walkSpeed;
         this.position.x-=moveVec.x;
         this.position.y-=moveVec.y;
-        console.log("S");
       }
       if(keyIsDown(68))
       {
+        //D is pressed
         const moveVec=createVector(cos(radians(this.headAngle+90)),sin(radians(this.headAngle+90))).normalize();
         moveVec.x*=walkSpeed;
         moveVec.y*=walkSpeed;
         this.position.x+=moveVec.x;
         this.position.y+=moveVec.y;
-        console.log("D");
       }
       if(keyIsDown(65))
       {
+        //A is pressed
         const moveVec=createVector(cos(radians(this.headAngle+90)),sin(radians(this.headAngle+90))).normalize();
         moveVec.x*=walkSpeed;
         moveVec.y*=walkSpeed;
         this.position.x-=moveVec.x;
         this.position.y-=moveVec.y;
-        console.log("A");
       }
+      //update mousePosition
       this.oldMouseX=mouseX;
     }
   }
